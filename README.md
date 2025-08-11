@@ -10,7 +10,7 @@ A futuristic web application for controlling robotic dogs with AI-powered voice 
 - **Voice Recognition**: Real-time speech-to-text for hands-free control
 - **Text Chat Interface**: Type commands naturally
 - **Movement Controls**: Forward, backward, left, right, stop
-- **Advanced Commands**: Sit, attack, patrol, tricks, and more
+- **Advanced Commands**: Sit, attack, patrol, tricks, play music/story, dance and more
 - **Real-time Status**: Battery, location, and activity monitoring
 - **Responsive Design**: Works on desktop and mobile devices
 
@@ -65,6 +65,9 @@ Try saying:
 - "Start patrol"
 - "Act cute"
 - "Stop moving"
+- "Play music"
+- "Play story"
+- "Dance"
 
 ## Technology Stack
 
