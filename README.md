@@ -2,6 +2,8 @@
 
 A futuristic web application for controlling robotic dogs with AI-powered voice and text commands, built for hackathon submission.
 
+![Untitled video - Made with Clipchamp](https://github.com/user-attachments/assets/e415fe7e-398d-44ee-8ae5-2a4f39801b4e)
+
 ## Features
 
 - **AI-Powered Command Processing**: Integrated with Hugging Face GPT-OSS models (120B/20B)
