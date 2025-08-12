@@ -1,113 +1,122 @@
-# RoboK9 Control Center
+-----
 
-A comprehensive web application for controlling robotic dogs with AI-powered voice and text commands, live camera feed, intruder detection, and entertainment features.
+# 🤖 RoboK9 Control Center
 
-## Features
+A futuristic web interface for controlling robotic companions through AI, voice, and live video. This app provides a seamless bridge between human intention and robotic action.
 
-- **AI-Powered Command Processing**: Integrated with Hugging Face GPT-OSS models (120B/20B)
-- **Voice Recognition**: Real-time speech-to-text for hands-free control
-- **Text Chat Interface**: Type commands naturally
-- **Movement Controls**: Forward, backward, left, right, stop
-- **Advanced Commands**: Sit, attack, patrol, tricks, and more
-- **Live Camera Feed**: Real-time video streaming with motion detection
-- **Intruder Detection**: AI-powered security alerts and monitoring
-- **Entertainment Features**: Play stories, music, dance routines, games
-- **Real-time Status**: Battery, location, and activity monitoring
-- **Responsive Design**: Works on desktop and mobile devices
-- **Hardware Integration**: Support for multiple robot platforms
+## ✨ Key Features
 
-## Setup
+  * **🗣️ Multi-Modal Control**: Issue commands via **voice recognition**, a **text-based chat**, or pre-built **action buttons**.
+  * **🧠 Advanced AI**: Powered by **Hugging Face GPT-OSS models** for sophisticated natural language understanding, turning conversational phrases into precise actions.
+  * **🎥 Live Security Feed**: A real-time camera stream with an animated scanning overlay, **intruder detection alerts**, and a fullscreen view.
+  * **🎵 Engaging Entertainment**: Command your RoboK9 to **tell stories**, **play music**, perform **dance routines**, or engage in interactive games.
+  * **🔌 Comprehensive Hardware Support**: Comes with a detailed guide for integrating with real-world robotics platforms.
+  * **📱 Responsive & Modern UI**: A sleek, dark-themed interface with glassmorphism effects that works flawlessly on both desktop and mobile.
 
-1. Get your Hugging Face API key from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+-----
 
-2. Update the `.env` file with your API key:
-   ```
-   VITE_HUGGINGFACE_API_KEY=hf_your_actual_api_key_here
-   ```
+## 🛠️ Technology Stack
 
-3. Install dependencies and start the development server:
-   ```bash
-   npm install
-   npm run dev
-   ```
+  * **Frontend**: **React**, **TypeScript**, **Vite**
+  * **Styling**: **Tailwind CSS**
+  * **AI Integration**: **Hugging Face Router API**
+  * **Voice I/O**: **Web Speech API** (Speech Recognition & Synthesis)
 
-## Hugging Face Integration
+-----
 
-This app uses the Hugging Face Router API with GPT-OSS models:
-- Primary: `openai/gpt-oss-120b:fireworks-ai`
-- Fallback: `openai/gpt-oss-20b:fireworks-ai`
-- Base URL: `https://router.huggingface.co/v1`
+## ⚙️ Setup & Installation
 
-The AI uses OpenAI-compatible API format through Hugging Face Router to process natural language commands and map them to robotic dog actions with high accuracy.
+Follow these steps to run the application locally.
 
-## Commands Available
+#### 1\. Clone the Repository
 
-### Basic Commands
-- Sit, Surrender, Get Down, Greetings
+```bash
+git clone <your-repo-url>
+cd <your-repo-directory>
+```
 
-### Movement Control
-- Move Forward/Backward
-- Turn Left/Right
-- Stop
+#### 2\. Install Dependencies
 
-### Tricks & Fun
-- Act Cute, Handshake, Handstand, Push-up
+```bash
+npm install
+```
 
-### Advanced Actions
-- Swimming, Kung-Fu, Urinate, Attack
+#### 3\. Configure Environment
 
-### Patrol & Security
-- Patrol mode with perimeter scanning
-- Live camera feed with motion detection
-- Intruder alerts and security monitoring
+Get your free API key from **[huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)**. Then, create a `.env` file in the project's root directory and add your key:
 
-### Entertainment
-- Play interactive stories
-- Music playback and dance routines
-- Interactive games and sleep mode
+```
+VITE_HUGGINGFACE_API_KEY='hf_your_actual_api_key_here'
+```
 
-## Voice Commands
+> **Note**: The app includes a mock AI fallback and will still function without an API key, but natural language processing will be disabled.
+
+#### 4\. Run the App
+
+```bash
+npm run dev
+```
+
+Navigate to `http://localhost:5173` (or the address shown in your terminal).
+
+-----
+
+## 🧠 Hugging Face Integration
+
+This app leverages the Hugging Face Router API to process complex commands using powerful Large Language Models.
+
+  * **Primary Model**: `openai/gpt-oss-120b:fireworks-ai`
+  * **Fallback Model**: `openai/gpt-oss-20b:fireworks-ai`
+  * **Endpoint**: `https://router.huggingface.co/v1`
+
+This setup allows the app to interpret nuanced user requests with high accuracy and translate them into specific robotic actions.
+
+-----
+
+## 🐾 Available Commands
+
+A wide range of commands are supported across several categories:
+
+| Category | Commands |
+| :--- | :--- |
+| **Basic** | Sit, Surrender, Get Down, Greetings |
+| **Movement** | Move Forward/Backward, Turn Left/Right, Stop/Halt |
+| **Tricks & Fun** | Act Cute, Handshake, Handstand, Push-up, Urinate |
+| **Advanced** | Swimming, Kung-Fu, Attack |
+| **Security**| Patrol Mode, Scan for Intruders, Turn Camera On/Off |
+| **Entertainment** | Play Story, Play Music, Dance, Play Games, Sleep Mode |
+
+-----
+
+## 🎤 Sample Voice Commands
 
 Try saying:
-- "Move forward"
-- "Sit down"
-- "Start patrol"
-- "Act cute"
-- "Stop moving"
-- "Turn on camera"
-- "Play music"
-- "Tell a story"
 
-## Technology Stack
+  * "Turn on the camera and scan for intruders."
+  * "Go forward and then turn left."
+  * "Play some music and start dancing."
+  * "Tell me a bedtime story."
+  * "Good boy, act cute\!"
 
-- React + TypeScript
-- Tailwind CSS
-- Hugging Face Inference API
-- Web Speech API
-- Vite
+-----
 
-## Hardware Integration
+## 🔌 Hardware Integration
 
-This application supports integration with various robotic dog platforms:
+This project is designed for real-world application. A comprehensive guide is included for connecting the interface to various robotics platforms:
 
-- **RapidPower RoboDog**: WiFi/REST API integration
-- **Unitree Go1/A1**: UDP/SDK integration  
-- **Boston Dynamics Spot**: gRPC API integration
-- **Generic Quadruped Robots**: MQTT/WebSocket/Serial
+  * **RapidPower RoboDog** (WiFi/REST API)
+  * **Unitree Go1/A1** (UDP/SDK)
+  * **Boston Dynamics Spot** (gRPC API)
+  * **Generic Quadruped Robots** (MQTT/WebSocket/Serial)
 
-See [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md) for detailed setup instructions.
+For detailed instructions, see the **[INTEGRATION\_GUIDE.md](https://www.google.com/search?q=./INTEGRATION_GUIDE.md)** file.
 
-## Camera & Security Features
+-----
 
-- **Live Video Stream**: Real-time camera feed from robot
-- **Motion Detection**: Automated intruder detection
-- **Security Alerts**: Visual and audio notifications
-- **Area Scanning**: Perimeter monitoring capabilities
+## 🏆 Hackathon Submission Highlights
 
-## Hackathon Notes
+This project excels in several key areas:
 
-This project demonstrates:
-- Advanced AI integration with Hugging Face models
-- Real-time voice processing
-- Modern UI/UX design
-- Responsive web application architecture
+  * **Best in Robotics**: It directly addresses the challenge of intuitive Human-Robot Interaction (HRI) by making a complex robot controllable through natural language.
+  * **For Humanity**: It's designed as a potential assistive technology for users with mobility impairments and can be adapted for safety applications like search-and-rescue.
+  * **Most Useful Fine-tune**: It demonstrates a practical "functional fine-tune" of a general LLM, adapting it into a specialized engine for translating human speech into machine commands.
