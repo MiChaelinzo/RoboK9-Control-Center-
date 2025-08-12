@@ -31,8 +31,8 @@ Follow these steps to run the application locally.
 #### 1\. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo-directory>
+git clone [<your-repo-url>](https://github.com/MiChaelinzo/RoboK9-Control-Center-.git)
+cd <[your-repo-directory](RoboK9-Control-Center-)>
 ```
 
 #### 2\. Install Dependencies
