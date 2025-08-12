@@ -109,7 +109,7 @@ This project is designed for real-world application. A comprehensive guide is in
   * **Boston Dynamics Spot** (gRPC API)
   * **Generic Quadruped Robots** (MQTT/WebSocket/Serial)
 
-For detailed instructions, see the **[INTEGRATION\_GUIDE.md](https://www.google.com/search?q=./INTEGRATION_GUIDE.md)** file.
+For detailed instructions, see the **[INTEGRATION\_GUIDE.md](https://github.com/MiChaelinzo/RoboK9-Control-Center-/blob/main/INTEGRATION_GUIDE.md)** file.
 
 -----
 
