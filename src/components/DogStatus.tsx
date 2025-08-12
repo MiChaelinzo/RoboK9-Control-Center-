@@ -1,5 +1,5 @@
 import React from 'react';
-import { Battery, Wifi, MapPin, Activity } from 'lucide-react';
+import { Battery, Wifi, MapPin, Activity, Camera, AlertTriangle } from 'lucide-react';
 import { DogStatus as DogStatusType } from '../types';
 
 interface DogStatusProps {
@@ -65,12 +65,39 @@ const DogStatus: React.FC<DogStatusProps> = ({ status }) => {
           </span>
         </div>
 
+        {/* Camera Status */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Camera size={16} className={status.cameraActive ? 'text-green-400' : 'text-slate-400'} />
+            <span className="text-slate-300 text-sm">Camera</span>
+          </div>
+          <span className={`text-sm font-medium ${status.cameraActive ? 'text-green-400' : 'text-slate-400'}`}>
+            {status.cameraActive ? 'Active' : 'Inactive'}
+          </span>
+        </div>
+
+        {/* Security Alert */}
+        {status.intruderDetected && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <AlertTriangle size={16} className="text-red-400 animate-pulse" />
+              <span className="text-slate-300 text-sm">Security</span>
+            </div>
+            <span className="text-sm font-medium text-red-400 animate-pulse">
+              ALERT
+            </span>
+          </div>
+        )}
         {/* Status Indicator */}
         <div className="mt-4 pt-4 border-t border-slate-700/50">
           <div className="flex items-center justify-center space-x-2">
-            <div className={`w-3 h-3 rounded-full ${status.online ? 'bg-green-400' : 'bg-red-400'} animate-pulse`} />
+            <div className={`w-3 h-3 rounded-full ${
+              status.intruderDetected ? 'bg-red-400' : 
+              status.online ? 'bg-green-400' : 'bg-red-400'
+            } animate-pulse`} />
             <span className="text-slate-300 text-sm font-medium">
-              {status.online ? 'Ready for commands' : 'Reconnecting...'}
+              {status.intruderDetected ? 'Security Alert Active' :
+               status.online ? 'Ready for commands' : 'Reconnecting...'}
             </span>
           </div>
         </div>

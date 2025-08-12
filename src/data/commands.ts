@@ -28,4 +28,16 @@ export const commands: Command[] = [
   
   // Patrol
   { id: 'patrol', name: 'Patrol', description: 'Begin patrol sequence', category: 'patrol', emoji: '🛡️' },
+  
+  // Entertainment
+  { id: 'play_story', name: 'Play Story', description: 'Tell an interactive story', category: 'entertainment', emoji: '📚' },
+  { id: 'play_music', name: 'Play Music', description: 'Play background music', category: 'entertainment', emoji: '🎵' },
+  { id: 'dance', name: 'Dance', description: 'Perform dance routine', category: 'entertainment', emoji: '💃' },
+  { id: 'sleep', name: 'Sleep', description: 'Enter sleep mode', category: 'entertainment', emoji: '😴' },
+  { id: 'play_games', name: 'Play Games', description: 'Interactive play mode', category: 'entertainment', emoji: '🎮' },
+  
+  // Camera & Security
+  { id: 'toggle_camera', name: 'Toggle Camera', description: 'Turn camera feed on/off', category: 'security', emoji: '📹' },
+  { id: 'scan_area', name: 'Scan Area', description: 'Scan for intruders', category: 'security', emoji: '🔍' },
+  { id: 'alert_mode', name: 'Alert Mode', description: 'Enable intruder alerts', category: 'security', emoji: '🚨' },
 ];

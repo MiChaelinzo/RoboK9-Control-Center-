@@ -1,8 +1,6 @@
 # RoboK9 Control Center
 
-A futuristic web application for controlling robotic dogs with AI-powered voice and text commands, built for hackathon submission.
-
-![Untitled video - Made with Clipchamp](https://github.com/user-attachments/assets/e415fe7e-398d-44ee-8ae5-2a4f39801b4e)
+A comprehensive web application for controlling robotic dogs with AI-powered voice and text commands, live camera feed, intruder detection, and entertainment features.
 
 ## Features
 
@@ -10,9 +8,13 @@ A futuristic web application for controlling robotic dogs with AI-powered voice 
 - **Voice Recognition**: Real-time speech-to-text for hands-free control
 - **Text Chat Interface**: Type commands naturally
 - **Movement Controls**: Forward, backward, left, right, stop
-- **Advanced Commands**: Sit, attack, patrol, tricks, play music/story, dance and more
+- **Advanced Commands**: Sit, attack, patrol, tricks, and more
+- **Live Camera Feed**: Real-time video streaming with motion detection
+- **Intruder Detection**: AI-powered security alerts and monitoring
+- **Entertainment Features**: Play stories, music, dance routines, games
 - **Real-time Status**: Battery, location, and activity monitoring
 - **Responsive Design**: Works on desktop and mobile devices
+- **Hardware Integration**: Support for multiple robot platforms
 
 ## Setup
 
@@ -56,6 +58,13 @@ The AI uses OpenAI-compatible API format through Hugging Face Router to process 
 
 ### Patrol & Security
 - Patrol mode with perimeter scanning
+- Live camera feed with motion detection
+- Intruder alerts and security monitoring
+
+### Entertainment
+- Play interactive stories
+- Music playback and dance routines
+- Interactive games and sleep mode
 
 ## Voice Commands
 
@@ -65,9 +74,9 @@ Try saying:
 - "Start patrol"
 - "Act cute"
 - "Stop moving"
+- "Turn on camera"
 - "Play music"
-- "Play story"
-- "Dance"
+- "Tell a story"
 
 ## Technology Stack
 
@@ -77,6 +86,24 @@ Try saying:
 - Web Speech API
 - Vite
 
+## Hardware Integration
+
+This application supports integration with various robotic dog platforms:
+
+- **RapidPower RoboDog**: WiFi/REST API integration
+- **Unitree Go1/A1**: UDP/SDK integration  
+- **Boston Dynamics Spot**: gRPC API integration
+- **Generic Quadruped Robots**: MQTT/WebSocket/Serial
+
+See [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md) for detailed setup instructions.
+
+## Camera & Security Features
+
+- **Live Video Stream**: Real-time camera feed from robot
+- **Motion Detection**: Automated intruder detection
+- **Security Alerts**: Visual and audio notifications
+- **Area Scanning**: Perimeter monitoring capabilities
+
 ## Hackathon Notes
 
 This project demonstrates:
@@ -84,4 +111,3 @@ This project demonstrates:
 - Real-time voice processing
 - Modern UI/UX design
 - Responsive web application architecture
-- Natural language command processing

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Bot, Zap, Shield, Star } from 'lucide-react';
+import { Bot, Zap, Shield, Star, Music, Camera } from 'lucide-react';
 import CommandButton from './components/CommandButton';
 import ChatInterface from './components/ChatInterface';
 import DogStatus from './components/DogStatus';
+import CameraFeed from './components/CameraFeed';
 import { commands } from './data/commands';
 import { useSpeechRecognition } from './hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from './hooks/useSpeechSynthesis';
@@ -25,7 +26,9 @@ function App() {
     online: true,
     battery: 87,
     currentAction: 'Idle',
-    location: 'Living Room'
+    location: 'Living Room',
+    cameraActive: false,
+    intruderDetected: false
   });
 
   const { isListening, transcript, startListening, stopListening, resetTranscript } = useSpeechRecognition();
@@ -144,7 +147,9 @@ function App() {
     movement: Bot,
     tricks: Star,
     advanced: Zap,
-    patrol: Bot
+    patrol: Bot,
+    entertainment: Music,
+    security: Camera
   };
 
   const categoryNames = {
@@ -152,9 +157,26 @@ function App() {
     movement: 'Movement Control',
     tricks: 'Tricks & Fun',
     advanced: 'Advanced Actions',
-    patrol: 'Patrol & Security'
+    patrol: 'Patrol & Security',
+    entertainment: 'Entertainment',
+    security: 'Camera & Security'
   };
 
+  const handleCameraToggle = () => {
+    setDogStatus(prev => ({ ...prev, cameraActive: !prev.cameraActive }));
+  };
+
+  const handleIntruderAlert = (detected: boolean) => {
+    setDogStatus(prev => ({ 
+      ...prev, 
+      intruderDetected: detected,
+      lastIntruderAlert: detected ? new Date() : prev.lastIntruderAlert
+    }));
+    
+    if (detected) {
+      speak("Intruder detected! Security protocol activated.");
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950">
       {/* Background Pattern */}
@@ -176,7 +198,7 @@ function App() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Commands */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="space-y-8">
             {Object.entries(groupedCommands).map(([category, categoryCommands]) => {
               const IconComponent = categoryIcons[category as keyof typeof categoryIcons];
               return (
@@ -201,6 +223,16 @@ function App() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Middle Column - Camera Feed */}
+          <div className="space-y-8">
+            <CameraFeed
+              isActive={dogStatus.cameraActive}
+              onToggle={handleCameraToggle}
+              intruderDetected={dogStatus.intruderDetected}
+              onIntruderAlert={handleIntruderAlert}
+            />
           </div>
 
           {/* Right Column - Chat & Status */}

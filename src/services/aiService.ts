@@ -235,7 +235,15 @@ If no specific command is identified, set command to null and provide a helpful 
       kung_fu: "Martial arts mode engaged. Hi-ya!",
       urinate: "Natural behavior routine executed.",
       attack: "Defense mode activated. Stay alert!",
-      patrol: "Beginning patrol sequence. Scanning perimeter..."
+      patrol: "Beginning patrol sequence. Scanning perimeter...",
+      play_story: "Once upon a time, in a digital world... Story mode activated!",
+      play_music: "🎵 Playing your favorite tunes! Dance mode ready.",
+      dance: "💃 Let's dance! Activating rhythm protocols.",
+      sleep: "😴 Entering sleep mode. Good night!",
+      play_games: "🎮 Game time! What shall we play?",
+      toggle_camera: "📹 Camera feed toggled. Visual systems updated.",
+      scan_area: "🔍 Scanning area for threats. All clear!",
+      alert_mode: "🚨 Alert mode activated. Monitoring for intruders."
     };
 
     return responses[command.id] || "Command executed successfully.";

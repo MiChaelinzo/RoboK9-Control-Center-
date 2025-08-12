@@ -2,7 +2,7 @@ export interface Command {
   id: string;
   name: string;
   description: string;
-  category: 'basic' | 'movement' | 'advanced' | 'tricks' | 'patrol';
+  category: 'basic' | 'movement' | 'advanced' | 'tricks' | 'patrol' | 'entertainment' | 'security';
   emoji: string;
 }
 
@@ -19,4 +19,7 @@ export interface DogStatus {
   battery: number;
   currentAction: string;
   location: string;
+  cameraActive: boolean;
+  intruderDetected: boolean;
+  lastIntruderAlert?: Date;
 }
