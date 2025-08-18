@@ -1,112 +1,113 @@
------
+# RoboK9 Control Center
 
-# 🤖 RoboK9 Control Center
+A comprehensive web application for controlling robotic dogs with AI-powered voice and text commands, live camera feed, intruder detection, and entertainment features.
 
-A futuristic web interface for interacting with a robotic companion powered by an advanced **Emotional AI**. This app moves beyond simple commands to create a genuine human-robot bond through conversation, learning, and shared experience.
+## Features
 
-## ✨ Key Features
+- **AI-Powered Command Processing**: Integrated with Hugging Face GPT-OSS models (120B/20B)
+- **Voice Recognition**: Real-time speech-to-text for hands-free control
+- **Text Chat Interface**: Type commands naturally
+- **Movement Controls**: Forward, backward, left, right, stop
+- **Advanced Commands**: Sit, attack, patrol, tricks, and more
+- **Live Camera Feed**: Real-time video streaming with motion detection
+- **Intruder Detection**: AI-powered security alerts and monitoring
+- **Entertainment Features**: Play stories, music, dance routines, games
+- **Real-time Status**: Battery, location, and activity monitoring
+- **Responsive Design**: Works on desktop and mobile devices
+- **Hardware Integration**: Support for multiple robot platforms
 
-  * **🧠 Emotional AI & Personality**: At its core, RoboK9 has a dynamic personality and can feel a range of emotions—happy, protective, playful, and more. Its mood changes based on context, interactions, and commands.
-  * **💬 Conversational Chat**: Switch to a free-conversation mode and chat about anything\! The AI has memory, understands context, and responds as an intelligent, loyal canine companion.
-  * **🎓 Adaptive Learning**: Teach your RoboK9 new tricks\! An interactive learning mode allows you to add new skills, which the robot remembers and tracks, growing more capable over time.
-  * **🎥 Advanced Security Feed**: A real-time camera stream with **Night Vision** mode, intruder detection, and status overlays for 24/7 security.
-  * **🗣️ Multi-Modal Control**: Seamlessly issue commands via voice, text, or quick-action buttons. The AI intelligently distinguishes between a command and a conversation.
-  * **🔌 Comprehensive Hardware Support**: Comes with a detailed `INTEGRATION_GUIDE.md` for connecting to real-world robotics platforms.
+## Setup
 
------
+1. Get your Hugging Face API key from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 
-## 🛠️ Technology Stack
+2. Update the `.env` file with your API key:
+   ```
+   VITE_HUGGINGFACE_API_KEY=hf_your_actual_api_key_here
+   ```
 
-  * **Frontend**: **React**, **TypeScript**, **Vite**
-  * **Styling**: **Tailwind CSS**
-  * **AI Integration**: **Hugging Face Router API** (powering a multi-modal AI for commands, conversation, and emotional state management)
-  * **Voice I/O**: **Web Speech API**
+3. Install dependencies and start the development server:
+   ```bash
+   npm install
+   npm run dev
+   ```
 
------
+## Hugging Face Integration
 
-## ⚙️ Setup & Installation
+This app uses the Hugging Face Router API with GPT-OSS models:
+- Primary: `openai/gpt-oss-120b:fireworks-ai`
+- Fallback: `openai/gpt-oss-20b:fireworks-ai`
+- Base URL: `https://router.huggingface.co/v1`
 
-Follow these steps to run the application locally.
+The AI uses OpenAI-compatible API format through Hugging Face Router to process natural language commands and map them to robotic dog actions with high accuracy.
 
-#### 1\. Clone the Repository
+## Commands Available
 
-```bash
-git clone https://github.com/MiChaelinzo/RoboK9-Control-Center-.git
-cd RoboK9-Control-Center-
-```
+### Basic Commands
+- Sit, Surrender, Get Down, Greetings
 
-#### 2\. Install Dependencies
+### Movement Control
+- Move Forward/Backward
+- Turn Left/Right
+- Stop
 
-```bash
-npm install
-```
+### Tricks & Fun
+- Act Cute, Handshake, Handstand, Push-up
 
-#### 3\. Configure Environment
+### Advanced Actions
+- Swimming, Kung-Fu, Urinate, Attack
 
-Get your free API key from **[huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)**. Then, create a `.env` file in the project's root directory and add your key:
+### Patrol & Security
+- Patrol mode with perimeter scanning
+- Live camera feed with motion detection
+- Intruder alerts and security monitoring
 
-```
-VITE_HUGGINGFACE_API_KEY='hf_your_actual_api_key_here'
-```
+### Entertainment
+- Play interactive stories
+- Music playback and dance routines
+- Interactive games and sleep mode
 
-> **Note**: The conversational, emotional, and learning AI features **require** the API key. Without it, the app will run in a limited mock mode.
+## Voice Commands
 
-#### 4\. Run the App
+Try saying:
+- "Move forward"
+- "Sit down"
+- "Start patrol"
+- "Act cute"
+- "Stop moving"
+- "Turn on camera"
+- "Play music"
+- "Tell a story"
 
-```bash
-npm run dev
-```
+## Technology Stack
 
-Navigate to `http://localhost:5173` (or the address shown in your terminal).
+- React + TypeScript
+- Tailwind CSS
+- Hugging Face Inference API
+- Web Speech API
+- Vite
 
------
+## Hardware Integration
 
-## 🧠 Hugging Face Integration
+This application supports integration with various robotic dog platforms:
 
-This app leverages the Hugging Face Router API to power a sophisticated AI that operates in multiple modes. It's more than a command interpreter; it's an AI brain that manages:
+- **RapidPower RoboDog**: WiFi/REST API integration
+- **Unitree Go1/A1**: UDP/SDK integration  
+- **Boston Dynamics Spot**: gRPC API integration
+- **Generic Quadruped Robots**: MQTT/WebSocket/Serial
 
-  * **An emotional state machine** to generate dynamic responses.
-  * **Conversational context and memory** for meaningful chats.
-  * **An adaptive learning loop** to acquire new user-taught skills.
-  * **Mode detection** to distinguish between commands, chats, and learning sessions.
+See [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md) for detailed setup instructions.
 
------
+## Camera & Security Features
 
-## 🐾 Capabilities & Interactions
+- **Live Video Stream**: Real-time camera feed from robot
+- **Motion Detection**: Automated intruder detection
+- **Security Alerts**: Visual and audio notifications
+- **Area Scanning**: Perimeter monitoring capabilities
 
-RoboK9's abilities go far beyond a simple command list.
+## Hackathon Notes
 
-| Category | Commands & Abilities |
-| :--- | :--- |
-| **Robotic Commands** | Sit, Patrol, Kung-Fu, Handstand, Dance, Night Vision On/Off, etc. |
-| **Conversational** | Ask "How are you feeling?", "Tell me about yourself", free-form chat. |
-| **Emotional** | Set emotion to happy/protective, praise with "Good boy\!". |
-| **Learning**| Initiate with "Learn a new trick", ask "What can you do?". |
-
------
-
-## 🎤 Sample Voice Commands
-
-Try these to experience the full personality:
-
-  * "How are you feeling?"
-  * "Turn on night vision."
-  * "Let's chat for a bit."
-  * "Learn a new trick."
-  * "Good boy\!"
-  * "Set your emotion to playful."
-  * "Tell me a story."
-
------
-
-## 🔌 Hardware Integration
-
-This project is designed for real-world application. The included **[INTEGRATION\_GUIDE.md](https://github.com/MiChaelinzo/RoboK9-Control-Center-/blob/main/INTEGRATION_GUIDE.md)** provides detailed instructions for connecting to various platforms and includes considerations for hardware that can physically express the AI's emotional states.
-
------
-
-## 🏆 Hackathon Submission Highlights
-
-  * **Best in Robotics**: This project redefines Human-Robot Interaction (HRI) as a **relationship**. By integrating Emotional AI and Adaptive Learning, it fosters a genuine bond, moving beyond simple control.
-  * **For Humanity**: It’s an **empathetic companion** designed to combat loneliness through meaningful conversation and emotional connection, while simultaneously providing advanced, 24/7 security with features like Night Vision.
-  * **Most Useful Fine-tune**: Demonstrates a highly sophisticated "functional fine-tune" of an LLM into a multi-modal AI that can seamlessly switch between being a **Command Interpreter**, a **Conversational Partner**, and a **Learning Agent**.
+This project demonstrates:
+- Advanced AI integration with Hugging Face models
+- Real-time voice processing
+- Modern UI/UX design
+- Responsive web application architecture

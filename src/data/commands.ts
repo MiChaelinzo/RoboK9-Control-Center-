@@ -40,4 +40,21 @@ export const commands: Command[] = [
   { id: 'toggle_camera', name: 'Toggle Camera', description: 'Turn camera feed on/off', category: 'security', emoji: '📹' },
   { id: 'scan_area', name: 'Scan Area', description: 'Scan for intruders', category: 'security', emoji: '🔍' },
   { id: 'alert_mode', name: 'Alert Mode', description: 'Enable intruder alerts', category: 'security', emoji: '🚨' },
+  { id: 'night_vision', name: 'Night Vision', description: 'Toggle infrared night vision mode', category: 'security', emoji: '🌙' },
+  
+  // AI & Learning
+  { id: 'learn_trick', name: 'Learn Trick', description: 'Teach new custom trick', category: 'advanced', emoji: '🧠' },
+  { id: 'conversation_mode', name: 'Chat Mode', description: 'Enable free conversation', category: 'entertainment', emoji: '💬' },
+  { id: 'emotion_happy', name: 'Happy Mode', description: 'Set emotional state to happy', category: 'basic', emoji: '😊' },
+  { id: 'emotion_excited', name: 'Excited Mode', description: 'Set emotional state to excited', category: 'basic', emoji: '🤩' },
+  { id: 'emotion_calm', name: 'Calm Mode', description: 'Set emotional state to calm', category: 'basic', emoji: '😌' },
+  
+  // Health & Wellness
+  { id: 'health_check', name: 'Health Check', description: 'Check owner health status', category: 'health', emoji: '🏥' },
+  { id: 'medication_reminder', name: 'Med Reminder', description: 'Check medication schedule', category: 'health', emoji: '💊' },
+  { id: 'exercise_reminder', name: 'Exercise Time', description: 'Remind to exercise', category: 'health', emoji: '🏃' },
+  { id: 'hydration_reminder', name: 'Drink Water', description: 'Hydration reminder', category: 'health', emoji: '💧' },
+  { id: 'stress_check', name: 'Stress Check', description: 'Monitor stress levels', category: 'health', emoji: '🧘' },
+  { id: 'sleep_analysis', name: 'Sleep Report', description: 'Analyze sleep patterns', category: 'health', emoji: '😴' },
+  { id: 'sync_health_data', name: 'Sync Health', description: 'Sync with smart devices', category: 'health', emoji: '⌚' },
 ];

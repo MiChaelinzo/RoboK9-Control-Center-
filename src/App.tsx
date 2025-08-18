@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bot, Zap, Shield, Star, Music, Camera } from 'lucide-react';
+import { Bot, Zap, Shield, Star, Music, Camera, Heart } from 'lucide-react';
 import CommandButton from './components/CommandButton';
 import ChatInterface from './components/ChatInterface';
 import DogStatus from './components/DogStatus';
@@ -8,7 +8,8 @@ import { commands } from './data/commands';
 import { useSpeechRecognition } from './hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from './hooks/useSpeechSynthesis';
 import { AIService } from './services/aiService';
-import { ChatMessage, Command, DogStatus as DogStatusType } from './types';
+import { ChatMessage, Command, DogStatus as DogStatusType, HealthData, Medication, HealthReminder } from './types';
+import HealthMonitor from './components/HealthMonitor';
 
 function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -28,9 +29,85 @@ function App() {
     currentAction: 'Idle',
     location: 'Living Room',
     cameraActive: false,
-    intruderDetected: false
+    intruderDetected: false,
+    emotion: 'happy',
+    nightVisionMode: false,
+    learningMode: false,
+    skillsLearned: ['Basic Commands', 'Movement Control'],
+    conversationMode: false
   });
 
+  const [healthData, setHealthData] = useState<HealthData>({
+    heartRate: 72,
+    steps: 8543,
+    bloodPressure: { systolic: 120, diastolic: 80 },
+    bloodOxygen: 98,
+    sleepHours: 7.5,
+    stressLevel: 'low',
+    lastSync: new Date(),
+    deviceConnected: true,
+    deviceType: 'apple_watch'
+  });
+
+  const [medications, setMedications] = useState<Medication[]>([
+    {
+      id: '1',
+      name: 'Vitamin D3',
+      dosage: '1000 IU',
+      frequency: 'Daily',
+      nextDose: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours from now
+      taken: false,
+      importance: 'routine'
+    },
+    {
+      id: '2',
+      name: 'Blood Pressure Med',
+      dosage: '10mg',
+      frequency: 'Twice daily',
+      nextDose: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes from now
+      taken: false,
+      importance: 'critical'
+    },
+    {
+      id: '3',
+      name: 'Omega-3',
+      dosage: '1000mg',
+      frequency: 'Daily',
+      nextDose: new Date(Date.now() + 4 * 60 * 60 * 1000), // 4 hours from now
+      taken: true,
+      importance: 'important'
+    }
+  ]);
+
+  const [healthReminders, setHealthReminders] = useState<HealthReminder[]>([
+    {
+      id: '1',
+      type: 'hydration',
+      title: 'Drink Water',
+      message: 'Time for your hourly hydration reminder!',
+      scheduledTime: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes from now
+      completed: false,
+      priority: 'medium'
+    },
+    {
+      id: '2',
+      type: 'exercise',
+      title: 'Take a Walk',
+      message: 'You\'ve been sitting for 2 hours. Time for a 10-minute walk!',
+      scheduledTime: new Date(Date.now() + 45 * 60 * 1000), // 45 minutes from now
+      completed: false,
+      priority: 'high'
+    },
+    {
+      id: '3',
+      type: 'checkup',
+      title: 'Doctor Appointment',
+      message: 'Annual checkup with Dr. Smith tomorrow at 2 PM',
+      scheduledTime: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
+      completed: false,
+      priority: 'high'
+    }
+  ]);
   const { isListening, transcript, startListening, stopListening, resetTranscript } = useSpeechRecognition();
   const { speak } = useSpeechSynthesis();
   const aiService = AIService.getInstance();
@@ -49,7 +126,22 @@ function App() {
       setDogStatus(prev => ({
         ...prev,
         battery: Math.max(0, prev.battery - Math.random() * 0.5),
-        location: ['Living Room', 'Kitchen', 'Garden', 'Hallway'][Math.floor(Math.random() * 4)]
+        location: ['Living Room', 'Kitchen', 'Garden', 'Hallway'][Math.floor(Math.random() * 4)],
+        // Randomly change emotions based on activity
+        emotion: prev.currentAction === 'Patrol' ? 'alert' : 
+                prev.currentAction === 'Sleep' ? 'sleepy' :
+                prev.currentAction.includes('Dance') ? 'excited' :
+                prev.currentAction.includes('Play') ? 'playful' : prev.emotion
+      }));
+      
+      // Simulate health data updates
+      setHealthData(prev => ({
+        ...prev,
+        heartRate: Math.max(60, Math.min(100, prev.heartRate + (Math.random() - 0.5) * 4)),
+        steps: prev.steps + Math.floor(Math.random() * 50),
+        stressLevel: prev.stressLevel === 'low' && Math.random() > 0.9 ? 'moderate' :
+                    prev.stressLevel === 'moderate' && Math.random() > 0.8 ? 'low' : prev.stressLevel,
+        lastSync: new Date()
       }));
     }, 10000);
 
@@ -67,7 +159,7 @@ function App() {
     setMessages(prev => [...prev, userMessage]);
 
     try {
-      const result = await aiService.processCommand(content, commands);
+      const result = await aiService.processCommand(content, commands, dogStatus);
       
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -82,6 +174,11 @@ function App() {
 
       if (result.commandToExecute) {
         await executeCommand(result.commandToExecute);
+      }
+      
+      // Handle status updates from AI response
+      if (result.statusUpdate) {
+        setDogStatus(prev => ({ ...prev, ...result.statusUpdate }));
       }
     } catch (error) {
       const errorMessage: ChatMessage = {
@@ -149,7 +246,8 @@ function App() {
     advanced: Zap,
     patrol: Bot,
     entertainment: Music,
-    security: Camera
+    security: Camera,
+    health: Heart
   };
 
   const categoryNames = {
@@ -159,23 +257,72 @@ function App() {
     advanced: 'Advanced Actions',
     patrol: 'Patrol & Security',
     entertainment: 'Entertainment',
-    security: 'Camera & Security'
+    security: 'Camera & Security',
+    health: 'Health & Wellness'
   };
 
   const handleCameraToggle = () => {
-    setDogStatus(prev => ({ ...prev, cameraActive: !prev.cameraActive }));
+    setDogStatus(prev => ({ 
+      ...prev, 
+      cameraActive: !prev.cameraActive,
+      emotion: !prev.cameraActive ? 'alert' : prev.emotion
+    }));
   };
 
   const handleIntruderAlert = (detected: boolean) => {
     setDogStatus(prev => ({ 
       ...prev, 
       intruderDetected: detected,
-      lastIntruderAlert: detected ? new Date() : prev.lastIntruderAlert
+      lastIntruderAlert: detected ? new Date() : prev.lastIntruderAlert,
+      emotion: detected ? 'protective' : 'alert'
     }));
     
     if (detected) {
       speak("Intruder detected! Security protocol activated.");
     }
+  };
+
+  const handleMedicationTaken = (medicationId: string) => {
+    setMedications(prev => prev.map(med => 
+      med.id === medicationId ? { ...med, taken: true } : med
+    ));
+    
+    const medication = medications.find(med => med.id === medicationId);
+    if (medication) {
+      speak(`${medication.name} marked as taken. Good job staying healthy!`);
+      
+      const successMessage: ChatMessage = {
+        id: Date.now().toString(),
+        content: `✅ ${medication.name} taken successfully! Keep up the healthy habits!`,
+        sender: 'system',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, successMessage]);
+    }
+  };
+
+  const handleReminderCompleted = (reminderId: string) => {
+    setHealthReminders(prev => prev.map(reminder => 
+      reminder.id === reminderId ? { ...reminder, completed: true } : reminder
+    ));
+    
+    const reminder = healthReminders.find(r => r.id === reminderId);
+    if (reminder) {
+      speak(`Great job completing your ${reminder.title} reminder!`);
+    }
+  };
+
+  const handleSyncHealthData = () => {
+    setHealthData(prev => ({ ...prev, lastSync: new Date() }));
+    speak("Health data synchronized successfully!");
+    
+    const syncMessage: ChatMessage = {
+      id: Date.now().toString(),
+      content: `🔄 Health data synced from ${healthData.deviceType.replace('_', ' ')}. All vitals updated!`,
+      sender: 'system',
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, syncMessage]);
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950">
@@ -232,6 +379,11 @@ function App() {
               onToggle={handleCameraToggle}
               intruderDetected={dogStatus.intruderDetected}
               onIntruderAlert={handleIntruderAlert}
+              nightVisionMode={dogStatus.nightVisionMode}
+              onNightVisionToggle={() => setDogStatus(prev => ({ 
+                ...prev, 
+                nightVisionMode: !prev.nightVisionMode 
+              }))}
             />
           </div>
 
@@ -239,6 +391,16 @@ function App() {
           <div className="space-y-8">
             {/* Dog Status */}
             <DogStatus status={dogStatus} />
+            
+            {/* Health Monitor */}
+            <HealthMonitor
+              healthData={healthData}
+              medications={medications}
+              reminders={healthReminders}
+              onMedicationTaken={handleMedicationTaken}
+              onReminderCompleted={handleReminderCompleted}
+              onSyncHealthData={handleSyncHealthData}
+            />
             
             {/* Chat Interface */}
             <ChatInterface

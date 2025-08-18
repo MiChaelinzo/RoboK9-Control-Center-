@@ -1,18 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, CameraOff, AlertTriangle, Eye, Maximize2 } from 'lucide-react';
+import { Camera, CameraOff, AlertTriangle, Eye, Maximize2, Moon, Sun } from 'lucide-react';
 
 interface CameraFeedProps {
   isActive: boolean;
   onToggle: () => void;
   intruderDetected: boolean;
   onIntruderAlert: (detected: boolean) => void;
+  nightVisionMode: boolean;
+  onNightVisionToggle: () => void;
 }
 
 const CameraFeed: React.FC<CameraFeedProps> = ({ 
   isActive, 
   onToggle, 
   intruderDetected, 
-  onIntruderAlert 
+  onIntruderAlert,
+  nightVisionMode,
+  onNightVisionToggle
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [detectionEnabled, setDetectionEnabled] = useState(true);
@@ -49,11 +53,11 @@ const CameraFeed: React.FC<CameraFeedProps> = ({
       time += 0.02;
       
       // Clear canvas
-      ctx.fillStyle = '#0f172a';
+      ctx.fillStyle = nightVisionMode ? '#001a00' : '#0f172a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       // Draw grid overlay
-      ctx.strokeStyle = '#1e293b';
+      ctx.strokeStyle = nightVisionMode ? '#003300' : '#1e293b';
       ctx.lineWidth = 1;
       for (let i = 0; i < canvas.width; i += 40) {
         ctx.beginPath();
@@ -70,7 +74,7 @@ const CameraFeed: React.FC<CameraFeedProps> = ({
       
       // Draw scanning line
       const scanY = (Math.sin(time) * 0.5 + 0.5) * canvas.height;
-      ctx.strokeStyle = '#06b6d4';
+      ctx.strokeStyle = nightVisionMode ? '#00ff00' : '#06b6d4';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, scanY);
@@ -79,7 +83,7 @@ const CameraFeed: React.FC<CameraFeedProps> = ({
       
       // Draw detection zones
       if (detectionEnabled) {
-        ctx.strokeStyle = intruderDetected ? '#ef4444' : '#10b981';
+        ctx.strokeStyle = intruderDetected ? '#ef4444' : nightVisionMode ? '#00ff00' : '#10b981';
         ctx.lineWidth = 2;
         ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
         
@@ -96,16 +100,18 @@ const CameraFeed: React.FC<CameraFeedProps> = ({
       }
       
       // Draw timestamp
-      ctx.fillStyle = '#06b6d4';
+      ctx.fillStyle = nightVisionMode ? '#00ff00' : '#06b6d4';
       ctx.font = '12px monospace';
-      ctx.fillText(new Date().toLocaleTimeString(), 10, 20);
+      const timestamp = new Date().toLocaleTimeString();
+      const mode = nightVisionMode ? ' [IR]' : ' [VIS]';
+      ctx.fillText(timestamp + mode, 10, 20);
       
       // Draw status indicators
       ctx.fillStyle = isActive ? '#10b981' : '#ef4444';
       ctx.fillText(`● REC ${isActive ? 'ON' : 'OFF'}`, 10, canvas.height - 10);
       
       if (intruderDetected) {
-        ctx.fillStyle = '#ef4444';
+        ctx.fillStyle = nightVisionMode ? '#ff0000' : '#ef4444';
         ctx.font = 'bold 16px monospace';
         ctx.fillText('⚠ INTRUDER DETECTED', canvas.width / 2 - 80, 40);
       }
@@ -179,7 +185,8 @@ const CameraFeed: React.FC<CameraFeedProps> = ({
             ref={canvasRef}
             width={640}
             height={360}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${nightVisionMode ? 'filter brightness-110 contrast-125' : ''}`}
+            style={nightVisionMode ? { filter: 'hue-rotate(90deg) saturate(2)' } : {}}
           />
           
           {!isActive && (
