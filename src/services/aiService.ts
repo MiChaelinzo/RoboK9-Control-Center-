@@ -32,6 +32,7 @@ export class AIService {
     response: string;
     commandToExecute?: Command;
     confidence: number;
+    statusUpdate?: Partial<DogStatus>;
   }> {
     try {
       // First, try direct command matching for better performance
@@ -207,7 +208,13 @@ If no specific command is identified, set command to null and provide a conversa
       'infrared': 'night_vision',
       'chat': 'conversation_mode',
       'talk': 'conversation_mode',
-      'learn': 'learn_trick'
+      'sync_health_data': '/health/sync',
+      'emergency_alert': '/emergency/alert',
+      'anomaly_check': '/health/anomaly',
+      'connect_healthkit': '/health/connect',
+      'fitness_coach': '/fitness/coach',
+      'workout_plan': '/fitness/workout',
+      'heart_rate_monitor': '/health/heart_rate'
     };
 
     for (const [keyword, commandId] of Object.entries(movementKeywords)) {
@@ -268,6 +275,24 @@ If no specific command is identified, set command to null and provide a conversa
         break;
       case 'stress_check':
         updates.emotion = 'calm';
+        break;
+      case 'emergency_alert':
+        updates.emotion = 'alert';
+        break;
+      case 'anomaly_check':
+        updates.emotion = 'alert';
+        break;
+      case 'connect_healthkit':
+        updates.emotion = 'excited';
+        break;
+      case 'fitness_coach':
+        updates.emotion = 'excited';
+        break;
+      case 'workout_plan':
+        updates.emotion = 'excited';
+        break;
+      case 'heart_rate_monitor':
+        updates.emotion = 'alert';
         break;
     }
     
@@ -345,7 +370,7 @@ If no specific command is identified, set command to null and provide a conversa
     };
   }
 
-  private getCommandResponse(command: Command): string {
+  private getCommandResponse(command: Command, dogStatus?: DogStatus): string {
     const responses: { [key: string]: string } = {
       sit: "Good boy! Sitting down now.",
       surrender: "Raising paws in surrender position.",
@@ -385,7 +410,13 @@ If no specific command is identified, set command to null and provide a conversa
       hydration_reminder: "💧 Hydration check! Remember to drink water regularly throughout the day.",
       stress_check: "🧘 Monitoring your stress levels... Take some deep breaths and relax. I'm here if you need to talk!",
       sleep_analysis: "😴 Analyzing your sleep patterns... You got good rest last night! Quality sleep is important for your health.",
-      sync_health_data: "⌚ Syncing with your smart devices... Health data updated successfully!"
+      sync_health_data: "⌚ Syncing with your smart devices... Health data updated successfully!",
+      emergency_alert: "🚨 Emergency alert activated! Contacting emergency services and designated caregivers immediately.",
+      anomaly_check: "🔍 Scanning for health anomalies... I'm monitoring your vitals for any unusual patterns.",
+      connect_healthkit: "📱 Connecting to Apple HealthKit... This will give me access to your comprehensive health data for better monitoring!",
+      fitness_coach: "🏋️ Personal fitness coach mode activated! I'm here to help you achieve your fitness goals with personalized workouts and motivation!",
+      workout_plan: "💪 Creating your personalized workout plan based on your fitness level and goals. Let's get stronger together!",
+      heart_rate_monitor: "❤️ Continuous heart rate monitoring activated. I'll watch for any irregularities and keep you informed about your cardiovascular health."
     };
 
     const baseResponse = responses[command.id] || "Command executed successfully.";

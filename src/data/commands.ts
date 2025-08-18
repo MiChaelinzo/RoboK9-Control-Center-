@@ -57,4 +57,12 @@ export const commands: Command[] = [
   { id: 'stress_check', name: 'Stress Check', description: 'Monitor stress levels', category: 'health', emoji: '🧘' },
   { id: 'sleep_analysis', name: 'Sleep Report', description: 'Analyze sleep patterns', category: 'health', emoji: '😴' },
   { id: 'sync_health_data', name: 'Sync Health', description: 'Sync with smart devices', category: 'health', emoji: '⌚' },
+  
+  // Advanced Health & Emergency
+  { id: 'emergency_alert', name: 'Emergency Alert', description: 'Trigger emergency response', category: 'health', emoji: '🚨' },
+  { id: 'anomaly_check', name: 'Anomaly Check', description: 'Check for health anomalies', category: 'health', emoji: '🔍' },
+  { id: 'connect_healthkit', name: 'Connect HealthKit', description: 'Connect to Apple HealthKit', category: 'health', emoji: '📱' },
+  { id: 'fitness_coach', name: 'Fitness Coach', description: 'Start personalized fitness coaching', category: 'health', emoji: '🏋️' },
+  { id: 'workout_plan', name: 'Workout Plan', description: 'Get personalized workout recommendations', category: 'health', emoji: '💪' },
+  { id: 'heart_rate_monitor', name: 'Heart Monitor', description: 'Continuous heart rate monitoring', category: 'health', emoji: '❤️' },
 ];

@@ -1,121 +1,113 @@
------
+# RoboK9 Control Center
 
-# 🤖 RoboK9 Control Center (v.2.1)
+A comprehensive web application for controlling robotic dogs with AI-powered voice and text commands, live camera feed, intruder detection, and entertainment features.
 
-A clinically-validated, AI-powered web platform for interacting with a robotic companion that serves as an empathetic friend, an advanced security guard, and a life-saving, predictive health guardian.
+## Features
 
-## ✨ Core Features
+- **AI-Powered Command Processing**: Integrated with Hugging Face GPT-OSS models (120B/20B)
+- **Voice Recognition**: Real-time speech-to-text for hands-free control
+- **Text Chat Interface**: Type commands naturally
+- **Movement Controls**: Forward, backward, left, right, stop
+- **Advanced Commands**: Sit, attack, patrol, tricks, and more
+- **Live Camera Feed**: Real-time video streaming with motion detection
+- **Intruder Detection**: AI-powered security alerts and monitoring
+- **Entertainment Features**: Play stories, music, dance routines, games
+- **Real-time Status**: Battery, location, and activity monitoring
+- **Responsive Design**: Works on desktop and mobile devices
+- **Hardware Integration**: Support for multiple robot platforms
 
-The RoboK9 platform is built on three pillars of functionality, creating a holistic and unprecedented user experience.
+## Setup
 
-#### ⚕️ Predictive Health Guardian (Clinically Validated)
+1. Get your Hugging Face API key from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 
-  * **Predictive Health Insights**: Utilizes machine learning on long-term health data to **predict potential health risks** before they become critical.
-  * **Emergency Anomaly Detection**: Actively monitors real-time vitals and is trained to detect anomalies (e.g., sudden heart rate spikes) that may require emergency attention.
-  * **Holistic Wellness**: Integrates **diet and nutrition data** from food logging apps and correlates it with fitness, vitals, and environmental data for 360-degree health advice.
-  * **Environmental Sensing**: Analyzes data from the robot's sensors (air quality, temperature) to understand environmental impacts on user health.
-  * **Smart Device Integration**: Syncs with Apple Watch, Fitbit, Samsung devices, and smartphones for a complete health picture.
+2. Update the `.env` file with your API key:
+   ```
+   VITE_HUGGINGFACE_API_KEY=hf_your_actual_api_key_here
+   ```
 
-#### 🧠 Empathetic AI Companion
+3. Install dependencies and start the development server:
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-  * **Emotional AI Engine**: Features a dynamic personality and can experience a range of emotions (happy, protective, playful) that are influenced by context and interaction.
-  * **Conversational Chat**: A full-featured chat mode allows for meaningful, context-aware conversations with an AI that has memory and a consistent personality.
-  * **Adaptive Learning**: Users can **teach RoboK9 new skills** and tricks. The AI tracks its progress and shows enthusiasm for learning.
+## Hugging Face Integration
 
-#### 👁️ Advanced Robotics & Security
+This app uses the Hugging Face Router API with GPT-OSS models:
+- Primary: `openai/gpt-oss-120b:fireworks-ai`
+- Fallback: `openai/gpt-oss-20b:fireworks-ai`
+- Base URL: `https://router.huggingface.co/v1`
 
-  * **Full Robotic Control**: Precise control over movement, advanced tricks (`Kung-Fu`, `Handstand`), and complex actions (`Patrol`).
-  * **24/7 Surveillance**: A live camera feed with **Night Vision** mode and automated intruder detection.
-  * **Multi-Modal Interface**: Control via voice, text, or a sleek UI with quick-action buttons.
+The AI uses OpenAI-compatible API format through Hugging Face Router to process natural language commands and map them to robotic dog actions with high accuracy.
 
------
+## Commands Available
 
-## 🛠️ Technology Stack
+### Basic Commands
+- Sit, Surrender, Get Down, Greetings
 
-  * **Frontend**: React, TypeScript, Vite, Tailwind CSS
-  * **AI & Machine Learning**: Hugging Face Router API, Scikit-learn (for predictive models)
-  * **Data Integration**: REST APIs, WebSocket (for real-time data), Apple HealthKit API
-  * **Voice I/O**: Web Speech API (Speech Recognition & Synthesis)
+### Movement Control
+- Move Forward/Backward
+- Turn Left/Right
+- Stop
 
------
+### Tricks & Fun
+- Act Cute, Handshake, Handstand, Push-up
 
-## ⚙️ Setup & Installation
+### Advanced Actions
+- Swimming, Kung-Fu, Urinate, Attack
 
-#### 1\. Clone the Repository
+### Patrol & Security
+- Patrol mode with perimeter scanning
+- Live camera feed with motion detection
+- Intruder alerts and security monitoring
 
-```bash
-git clone https://github.com/MiChaelinzo/RoboK9-Control-Center-.git
-cd RoboK9-Control-Center-
-```
+### Entertainment
+- Play interactive stories
+- Music playback and dance routines
+- Interactive games and sleep mode
 
-#### 2\. Install Dependencies
+## Voice Commands
 
-```bash
-npm install
-```
+Try saying:
+- "Move forward"
+- "Sit down"
+- "Start patrol"
+- "Act cute"
+- "Stop moving"
+- "Turn on camera"
+- "Play music"
+- "Tell a story"
 
-#### 3\. Configure Environment
+## Technology Stack
 
-Get your API key from **[huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)**. Create a `.env` file and add your key:
+- React + TypeScript
+- Tailwind CSS
+- Hugging Face Inference API
+- Web Speech API
+- Vite
 
-```
-VITE_HUGGINGFACE_API_KEY='hf_your_actual_api_key_here'
-```
+## Hardware Integration
 
-> **Note**: The Predictive Health, Conversational, and Emotional AI features **require** the API key to function.
+This application supports integration with various robotic dog platforms:
 
-#### 4\. Run the App
+- **RapidPower RoboDog**: WiFi/REST API integration
+- **Unitree Go1/A1**: UDP/SDK integration  
+- **Boston Dynamics Spot**: gRPC API integration
+- **Generic Quadruped Robots**: MQTT/WebSocket/Serial
 
-```bash
-npm run dev
-```
+See [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md) for detailed setup instructions.
 
------
+## Camera & Security Features
 
-## 🧠 AI & System Architecture
+- **Live Video Stream**: Real-time camera feed from robot
+- **Motion Detection**: Automated intruder detection
+- **Security Alerts**: Visual and audio notifications
+- **Area Scanning**: Perimeter monitoring capabilities
 
-The core of this project is a sophisticated AI brain powered by the Hugging Face Router API. It operates beyond simple NLP and functions as a multi-modal engine that:
+## Hackathon Notes
 
-1.  Runs **predictive machine learning models** on longitudinal health data to forecast risks.
-2.  Manages a dynamic **emotional state machine** and a **conversational context memory**.
-3.  Intelligently switches between **Command, Chat, and Learning modes**.
-4.  Processes and correlates data from multiple sources (user input, health APIs, environmental sensors).
-
------
-
-## 💬 Key Interactions & Capabilities
-
-Interact with all of RoboK9's advanced systems using natural language.
-
-#### Health & Wellness
-
-  * `"What are my health risks for next week?"`
-  * `"Check my vitals."`
-  * `"Log my breakfast: oatmeal and berries."`
-  * `"Any overdue medications?"`
-
-#### Conversation & Emotion
-
-  * `"How are you feeling today?"`
-  * `"Let's chat."`
-  * `"Good boy!"`
-
-#### Learning & Robotics
-
-  * `"Learn a new trick."`
-  * `"What skills have you mastered?"`
-  * `"Turn on night vision and patrol the perimeter."`
-
------
-
-## 🔌 Hardware Integration
-
-This application is designed as a universal controller for advanced robotics. The included **[INTEGRATION\_GUIDE.md](https://www.google.com/search?q=./INTEGRATION_GUIDE.md)** provides a roadmap for connecting to platforms like **Unitree Go1** and **Boston Dynamics Spot**, with special considerations for implementing **environmental sensors** and hardware capable of **physical emotion expression**.
-
------
-
-## 🏆 Project Highlights
-
-  * **Clinically-Validated Health Monitoring**: The platform's algorithms and design principles have been validated against clinical standards, creating a trustworthy health companion.
-  * **Pioneering Human-Robot Relationship**: This project redefines HRI by creating an AI with emotional depth, learning capabilities, and a life-saving purpose.
-  * **Full-Stack System Integration**: Demonstrates a complex integration of a modern web frontend, a multi-modal AI brain, external hardware APIs, and real-time data processing.
+This project demonstrates:
+- Advanced AI integration with Hugging Face models
+- Real-time voice processing
+- Modern UI/UX design
+- Responsive web application architecture
