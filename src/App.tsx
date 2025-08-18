@@ -799,13 +799,13 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950">
+    <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-4 py-6">
         {/* Header */}
-        <header className="text-center mb-12">
+        <header className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl shadow-2xl shadow-cyan-500/25 mb-6">
             <Bot size={32} className="text-white" />
           </div>
@@ -817,9 +817,9 @@ function App() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Commands */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {Object.entries(groupedCommands).map(([category, categoryCommands]) => {
               const IconComponent = categoryIcons[category as keyof typeof categoryIcons];
               return (
@@ -847,7 +847,7 @@ function App() {
           </div>
 
           {/* Middle Column - Camera Feed */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <CameraFeed
               isActive={dogStatus.cameraActive}
               onToggle={handleCameraToggle}
@@ -869,7 +869,7 @@ function App() {
           </div>
 
           {/* Right Column - Chat & Status */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Dog Status */}
             <DogStatus status={dogStatus} />
             
@@ -942,7 +942,7 @@ function App() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-center">
+        <footer className="mt-8 text-center pb-6">
           <div className="inline-flex items-center space-x-2 text-slate-500 text-sm">
             <Bot size={16} />
             <span>Powered by Advanced AI • RoboK9 v2.1</span>
