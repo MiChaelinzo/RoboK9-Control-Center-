@@ -84,6 +84,211 @@ A comprehensive web application for controlling robotic dogs with AI-powered voi
    npm run dev
    ```
 
+## Device Integration Setup 📱⌚
+
+### Smartwatch Connection
+
+#### Apple Watch (HealthKit) 🍎
+1. **Enable HealthKit Integration:**
+   - Open the RoboK9 app in your browser
+   - Navigate to Health Monitor section
+   - Click "Connect HealthKit" button
+   - Grant permissions for:
+     - Heart Rate ❤️
+     - Steps 👣
+     - Blood Pressure 🩺
+     - Blood Oxygen 🫁
+     - Sleep Analysis 😴
+     - Workout Data 🏃
+
+2. **iOS Shortcuts Setup:**
+   ```
+   Create iOS Shortcut → Add "Get Health Sample" 
+   → Select data types → Run shortcut hourly
+   ```
+
+#### Samsung Galaxy Watch 🌟
+1. **Samsung Health Integration:**
+   - Install Samsung Health app
+   - Enable data sharing in Privacy settings
+   - Connect via Samsung Health API
+   - Sync data: Heart rate, steps, sleep, stress
+
+2. **Galaxy Watch Active Features:**
+   - Continuous heart rate monitoring
+   - Blood oxygen tracking (SpO2)
+   - Sleep stage analysis
+   - Stress level detection
+
+#### Fitbit Integration 🏃‍♂️
+1. **Fitbit Web API Setup:**
+   - Register app at [dev.fitbit.com](https://dev.fitbit.com)
+   - Get Client ID and Secret
+   - OAuth 2.0 authentication flow
+   - Sync: Heart rate, activity, sleep data
+
+2. **Supported Fitbit Devices:**
+   - Fitbit Sense (ECG, stress, SpO2)
+   - Fitbit Versa series
+   - Fitbit Charge series
+   - Fitbit Inspire series
+
+### Environmental Sensors 🌍
+
+#### Air Quality Monitors
+
+**PurpleAir Sensors 💜**
+```bash
+# Get your sensor ID from map.purpleair.com
+API_KEY=your_purpleair_api_key
+SENSOR_ID=your_sensor_id
+```
+- Real-time PM2.5, PM10 data
+- Temperature and humidity
+- Air quality index (AQI)
+
+**IQAir AirVisual 🌬️**
+```bash
+# Register at airvisual.com/api
+IQAIR_API_KEY=your_iqair_api_key
+LOCATION=your_city_name
+```
+- Professional-grade AQI data
+- Pollution forecasts
+- Health recommendations
+
+**Awair Element 🏠**
+```bash
+# Local network integration
+AWAIR_DEVICE_IP=192.168.1.xxx
+AWAIR_TOKEN=your_device_token
+```
+- Indoor air quality monitoring
+- CO2, VOCs, particulates
+- Temperature, humidity, noise
+
+#### Weather Stations ⛅
+
+**Davis Vantage Pro2 🌡️**
+- Professional weather monitoring
+- UV index, solar radiation
+- Wind speed and direction
+- Barometric pressure trends
+
+**Ambient Weather WS-2902 📊**
+- WiFi-enabled weather station
+- Real-time data to cloud
+- Lightning detection
+- Soil temperature sensors
+
+### Smart Home Integration 🏡
+
+#### Philips Hue (Circadian Lighting) 💡
+```javascript
+// Auto-adjust lighting based on health data
+if (stressLevel === 'high') {
+  setLighting('warm', 'dim');
+} else if (sleepTime) {
+  setLighting('red', 'minimal');
+}
+```
+
+#### Nest Thermostat 🌡️
+- Temperature optimization for sleep
+- Humidity control for respiratory health
+- Energy-efficient climate management
+
+#### Smart Air Purifiers 🌪️
+- Dyson Pure series integration
+- Auto-activation on poor AQI
+- HEPA filtration control
+
+### Medical Device Integration 🏥
+
+#### Blood Pressure Monitors
+**Omron HeartGuide 📱**
+- Wearable BP monitoring
+- Bluetooth connectivity
+- Irregular heartbeat detection
+
+**Withings BPM Connect 🔗**
+- WiFi-enabled BP cuff
+- Automatic data sync
+- Multi-user support
+
+#### Glucose Monitors (for Diabetics)
+**Dexcom G6 CGM 📈**
+- Continuous glucose monitoring
+- Real-time alerts
+- Trend analysis
+
+**FreeStyle Libre 🩸**
+- Flash glucose monitoring
+- 14-day sensor wear
+- Smartphone integration
+
+### Setup Instructions by Device Type 🔧
+
+#### For iOS Users (iPhone + Apple Watch)
+1. **Health App Permissions:**
+   ```
+   Settings → Privacy & Security → Health → RoboK9 App
+   Enable: All Categories → Allow
+   ```
+
+2. **Automatic Sync Setup:**
+   - Background App Refresh: ON
+   - Location Services: ON (for environmental data)
+   - Notifications: ON (for health alerts)
+
+#### For Android Users (Samsung/Wear OS)
+1. **Google Fit Integration:**
+   ```
+   Google Fit → Settings → Connected Apps
+   Add RoboK9 → Grant Permissions
+   ```
+
+2. **Samsung Health Setup:**
+   ```
+   Samsung Health → Settings → Permissions
+   Third-party Apps → Add RoboK9
+   ```
+
+#### Environmental Sensor Network
+1. **Create Sensor Dashboard:**
+   - Register devices on manufacturer platforms
+   - Get API keys for each service
+   - Configure location-based monitoring
+
+2. **Data Correlation Setup:**
+   ```javascript
+   // Example: Link air quality to respiratory symptoms
+   if (aqi > 100 && symptoms.includes('cough')) {
+     sendAlert('High AQI may be affecting your respiratory health');
+   }
+   ```
+
+### Troubleshooting Device Connections 🔧
+
+**Common Issues:**
+- **Bluetooth Connection:** Restart both devices, clear Bluetooth cache
+- **WiFi Sensors:** Check network connectivity, firewall settings
+- **API Limits:** Monitor rate limits, upgrade plans if needed
+- **Battery Life:** Enable power-saving modes on wearables
+
+**Data Sync Problems:**
+- Force sync in device apps
+- Check internet connectivity
+- Verify API credentials
+- Clear app cache and restart
+
+### Privacy & Security 🔒
+- All health data encrypted in transit and at rest
+- HIPAA-compliant data handling
+- User controls data sharing permissions
+- Regular security audits and updates
+- Option to store data locally only
+
 ## Hugging Face Integration 🤗
 
 This app uses the Hugging Face Router API with GPT-OSS models:
