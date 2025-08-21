@@ -83,6 +83,15 @@ A comprehensive web application for controlling robotic dogs with AI-powered voi
    npm install
    npm run dev
    ```
+   
+## Hugging Face Integration 🤗
+
+This app uses the Hugging Face Router API with GPT-OSS models:
+- Primary: `openai/gpt-oss-120b:fireworks-ai`
+- Fallback: `openai/gpt-oss-20b:fireworks-ai`
+- Base URL: `https://router.huggingface.co/v1`
+
+The AI uses OpenAI-compatible API format through Hugging Face Router to process natural language commands and map them to robotic dog actions with high accuracy.
 
 ## Device Integration Setup 📱⌚
 
@@ -288,15 +297,6 @@ if (stressLevel === 'high') {
 - User controls data sharing permissions
 - Regular security audits and updates
 - Option to store data locally only
-
-## Hugging Face Integration 🤗
-
-This app uses the Hugging Face Router API with GPT-OSS models:
-- Primary: `openai/gpt-oss-120b:fireworks-ai`
-- Fallback: `openai/gpt-oss-20b:fireworks-ai`
-- Base URL: `https://router.huggingface.co/v1`
-
-The AI uses OpenAI-compatible API format through Hugging Face Router to process natural language commands and map them to robotic dog actions with high accuracy.
 
 ## Commands Available 🎯
 
