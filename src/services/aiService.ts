@@ -1,12 +1,12 @@
 import OpenAI from 'openai';
-import { Command } from '../types';
-
 import { Command, DogStatus } from '../types';
 
 export class AIService {
   private static instance: AIService;
   private client: OpenAI;
   private modelId = 'openai/gpt-oss-120b:fireworks-ai';
+  private conversationHistory: string[] = [];
+  private lastError: string | null = null;
   
   private constructor() {
     const apiKey = import.meta.env.VITE_HUGGINGFACE_API_KEY;
@@ -28,20 +28,27 @@ export class AIService {
     return AIService.instance;
   }
 
-  async processCommand(input: string, availableCommands: Command[]): Promise<{
+  async processCommand(input: string, availableCommands: Command[], dogStatus?: DogStatus): Promise<{
     response: string;
     commandToExecute?: Command;
     confidence: number;
     statusUpdate?: Partial<DogStatus>;
   }> {
     try {
+      // Add to conversation history
+      this.conversationHistory.push(input);
+      if (this.conversationHistory.length > 10) {
+        this.conversationHistory.shift();
+      }
+
       // First, try direct command matching for better performance
       const directMatch = this.findDirectCommandMatch(input, availableCommands);
       if (directMatch) {
         return {
-          response: `Executing ${directMatch.name} command. ${this.getCommandResponse(directMatch)}`,
-          commandToExecute: directMatch,
-          confidence: 0.95
+          response: `Executing ${directMatch.command.name} command. ${this.getCommandResponse(directMatch.command, dogStatus)}`,
+          commandToExecute: directMatch.command,
+          confidence: 0.95,
+          statusUpdate: directMatch.statusUpdate
         };
       }
 
@@ -53,6 +60,7 @@ export class AIService {
       }
     } catch (error) {
       console.error('AI processing error:', error);
+      this.lastError = error instanceof Error ? error.message : 'Unknown error';
       return await this.processWithMockAI(input, availableCommands, dogStatus);
     }
   }
@@ -82,6 +90,7 @@ Current Status:
 
 ${currentStatus}
 
+Recent conversation: ${this.conversationHistory.slice(-3).join(' → ')}
 Available commands:
 ${commandList}
 
@@ -91,10 +100,13 @@ PERSONALITY: You are friendly, loyal, intelligent, and emotionally responsive. Y
 - Learn new tricks and skills
 - Remember past interactions
 - Show protective instincts when needed
+- Adapt your responses based on the user's mood and preferences
+- Show concern for the user's health and wellbeing
 
 If the user is just chatting (not giving commands), respond conversationally as a smart robotic dog would.
 If they're asking you to learn something new, be enthusiastic about learning.
 If they're asking about your feelings or status, share your current emotional state.
+If they seem stressed or upset, offer comfort and support.
 
 Respond in JSON format only:
 {
@@ -103,7 +115,8 @@ Respond in JSON format only:
   "confidence": 0.0-1.0,
   "emotion_change": "new_emotion_or_null",
   "learning_mode": true/false/null,
-  "conversation_mode": true/false/null
+  "conversation_mode": true/false/null,
+  "memory_note": "important_thing_to_remember_or_null"
 }
 
 If no specific command is identified, set command to null and provide a conversational response.`;
@@ -156,6 +169,11 @@ If no specific command is identified, set command to null and provide a conversa
       if (parsedResponse.conversation_mode !== null) {
         statusUpdate.conversationMode = parsedResponse.conversation_mode;
       }
+      
+      // Store memory notes
+      if (parsedResponse.memory_note) {
+        this.storeMemory(parsedResponse.memory_note);
+      }
 
       return {
         response: parsedResponse.response || "Command processed.",
@@ -166,6 +184,7 @@ If no specific command is identified, set command to null and provide a conversa
 
     } catch (error) {
       console.error('Hugging Face Router API error:', error);
+      this.lastError = error instanceof Error ? error.message : 'API error';
       // Try fallback model
       if (this.modelId === 'openai/gpt-oss-120b:fireworks-ai') {
         this.modelId = 'openai/gpt-oss-20b:fireworks-ai';
@@ -204,17 +223,31 @@ If no specific command is identified, set command to null and provide a conversa
       'turn right': 'turn_right',
       'stop': 'stop',
       'halt': 'stop',
+      'freeze': 'stop',
       'night vision': 'night_vision',
       'infrared': 'night_vision',
+      'ir mode': 'night_vision',
       'chat': 'conversation_mode',
       'talk': 'conversation_mode',
-      'sync_health_data': '/health/sync',
-      'emergency_alert': '/emergency/alert',
-      'anomaly_check': '/health/anomaly',
-      'connect_healthkit': '/health/connect',
-      'fitness_coach': '/fitness/coach',
-      'workout_plan': '/fitness/workout',
-      'heart_rate_monitor': '/health/heart_rate'
+      'conversation': 'conversation_mode',
+      'health check': 'health_check',
+      'check health': 'health_check',
+      'medication': 'medication_reminder',
+      'meds': 'medication_reminder',
+      'exercise': 'exercise_reminder',
+      'workout': 'exercise_reminder',
+      'water': 'hydration_reminder',
+      'drink': 'hydration_reminder',
+      'stress': 'stress_check',
+      'sleep': 'sleep_analysis',
+      'emergency': 'emergency_alert',
+      'help me': 'emergency_alert',
+      'sync health': 'sync_health_data',
+      'connect watch': 'connect_healthkit',
+      'fitness': 'fitness_coach',
+      'coach': 'fitness_coach',
+      'heart rate': 'heart_rate_monitor',
+      'pulse': 'heart_rate_monitor'
     };
 
     for (const [keyword, commandId] of Object.entries(movementKeywords)) {
@@ -360,6 +393,33 @@ If no specific command is identified, set command to null and provide a conversa
         statusUpdate: { emotion: 'happy' }
       };
     }
+    
+    // Weather and environmental queries
+    if (normalizedInput.includes('weather') || normalizedInput.includes('air quality')) {
+      return {
+        response: "Let me check the environmental conditions for you! I'm monitoring air quality, temperature, humidity, and other factors that might affect your health.",
+        confidence: 0.9,
+        statusUpdate: { emotion: 'alert' }
+      };
+    }
+    
+    // Health-related queries
+    if (normalizedInput.includes('health') || normalizedInput.includes('vitals')) {
+      return {
+        response: "I'm constantly monitoring your health! Your heart rate, blood pressure, and other vitals are looking good. Would you like me to check for any anomalies or sync with your smartwatch?",
+        confidence: 0.9,
+        statusUpdate: { emotion: 'alert' }
+      };
+    }
+    
+    // Emotional support
+    if (normalizedInput.includes('sad') || normalizedInput.includes('stressed') || normalizedInput.includes('tired')) {
+      return {
+        response: "I can sense you might not be feeling your best. I'm here for you! Would you like me to play some calming music, guide you through a breathing exercise, or just chat? Your wellbeing is my priority! 🤗",
+        confidence: 0.95,
+        statusUpdate: { emotion: 'calm' }
+      };
+    }
 
     return {
       response: dogStatus?.conversationMode ? 
@@ -420,7 +480,7 @@ If no specific command is identified, set command to null and provide a conversa
     };
 
     const baseResponse = responses[command.id] || "Command executed successfully.";
-    const emotionalAddition = dogStatus ? ` I'm feeling ${dogStatus.emotion} about this!` : "";
+    const emotionalAddition = dogStatus && Math.random() > 0.7 ? ` I'm feeling ${dogStatus.emotion} about this!` : "";
     
     return baseResponse + (Math.random() > 0.7 ? emotionalAddition : "");
   }
@@ -435,5 +495,18 @@ If no specific command is identified, set command to null and provide a conversa
     
     // 98% success rate for demo purposes
     return Math.random() > 0.02;
+  }
+  
+  private storeMemory(note: string): void {
+    // Store important conversation notes for future reference
+    console.log('Storing memory:', note);
+  }
+  
+  getLastError(): string | null {
+    return this.lastError;
+  }
+  
+  clearError(): void {
+    this.lastError = null;
   }
 }

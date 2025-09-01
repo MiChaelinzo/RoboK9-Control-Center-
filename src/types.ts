@@ -126,6 +126,7 @@ export interface PredictiveInsight {
   factors: string[];
   recommendations: string[];
   preventiveActions: string[];
+  actionTaken?: boolean;
   createdAt: Date;
   validUntil: Date;
 }
@@ -274,4 +275,51 @@ export interface Exercise {
   restTime: number; // seconds
   instructions: string[];
   targetMuscles: string[];
+}
+
+export interface VoiceCommand {
+  id: string;
+  phrases: string[];
+  commandId: string;
+  confidence: number;
+}
+
+export interface AIPersonality {
+  mood: 'cheerful' | 'serious' | 'playful' | 'protective' | 'sleepy';
+  energy: number; // 0-100
+  loyalty: number; // 0-100
+  intelligence: number; // 0-100
+  lastInteraction: Date;
+  favoriteCommands: string[];
+  memoryBank: string[];
+}
+
+export interface SecurityEvent {
+  id: string;
+  type: 'motion_detected' | 'intruder_alert' | 'perimeter_breach' | 'camera_offline';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: Date;
+  location: string;
+  description: string;
+  imageUrl?: string;
+  resolved: boolean;
+  responseTime?: number;
+}
+
+export interface WeatherData {
+  temperature: number;
+  humidity: number;
+  pressure: number;
+  windSpeed: number;
+  windDirection: string;
+  visibility: number;
+  uvIndex: number;
+  condition: string;
+  forecast: {
+    day: string;
+    high: number;
+    low: number;
+    condition: string;
+    icon: string;
+  }[];
 }
