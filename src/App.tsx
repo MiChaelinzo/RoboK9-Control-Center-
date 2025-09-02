@@ -14,14 +14,14 @@ import { commands } from './data/commands';
 import { useSpeechRecognition } from './hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from './hooks/useSpeechSynthesis';
 import { AIService } from './services/aiService';
-import { ChatMessage, Command, DogStatus as DogStatusType, HealthData, Medication, HealthReminder, HealthAnomaly, EmergencyContact, FitnessGoals, WeeklyActivity, WorkoutPlan, AIPersonality, VoiceCommand, SecurityEvent, WeatherData } from './types';
+import { ChatMessage, Command, DogStatus as DogStatusType, HealthData, Medication, HealthReminder, HealthAnomaly, EmergencyContact, FitnessGoals, WeeklyActivity, WorkoutPlan, AIPersonality, VoiceCommand, SecurityEvent, WeatherData, PredictiveInsight, NutritionData, EnvironmentalData, ClinicalValidation as ClinicalValidationType, HealthcareProvider } from './types';
 import HealthMonitor from './components/HealthMonitor';
 import AnomalyDetector from './components/AnomalyDetector';
 import FitnessCoach from './components/FitnessCoach';
 import NutritionTracker from './components/NutritionTracker';
 import EnvironmentalMonitor from './components/EnvironmentalMonitor';
 import PredictiveInsights from './components/PredictiveInsights';
-import ClinicalValidationComponent from './components/ClinicalValidation';
+import ClinicalValidation from './components/ClinicalValidation';
 import { AnomalyDetectionService } from './services/anomalyDetectionService';
 import { HealthKitService } from './services/healthKitService';
 import { PredictiveAnalyticsService } from './services/predictiveAnalyticsService';
@@ -1119,7 +1119,7 @@ function App() {
               />
               
               {/* Clinical Validation */}
-              <ClinicalValidationComponent
+              <ClinicalValidation
                 validations={clinicalValidations}
                 healthcareProviders={healthcareProviders}
                 onRequestValidation={handleRequestValidation}
