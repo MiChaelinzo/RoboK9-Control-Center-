@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Zap, Shield, Star, Music, Camera, Heart } from 'lucide-react';
 import CommandButton from './components/CommandButton';
 import ChatInterface from './components/ChatInterface';
@@ -23,6 +24,9 @@ import EnvironmentalMonitor from './components/EnvironmentalMonitor';
 import PredictiveInsights from './components/PredictiveInsights';
 import ClinicalValidation from './components/ClinicalValidation';
 import { AnomalyDetectionService } from './services/anomalyDetectionService';
+import AIVisionSystem from './components/AIVisionSystem';
+import Robot3DVisualization from './components/Robot3DVisualization';
+import AdvancedHealthDashboard from './components/AdvancedHealthDashboard';
 import { HealthKitService } from './services/healthKitService';
 import { PredictiveAnalyticsService } from './services/predictiveAnalyticsService';
 
@@ -36,6 +40,9 @@ function App() {
     }
   ]);
   
+  const [activeMainTab, setActiveMainTab] = useState<'dashboard' | 'robot' | 'health' | 'ai'>('dashboard');
+  const [aiVisionActive, setAiVisionActive] = useState(false);
+  const [historicalHealthData, setHistoricalHealthData] = useState<HealthData[]>([]);
   const [executingCommands, setExecutingCommands] = useState<Set<string>>(new Set());
   
   const [dogStatus, setDogStatus] = useState<DogStatusType>({
@@ -361,7 +368,7 @@ function App() {
     ]
   });
 
-  const [clinicalValidations, setClinicalValidations] = useState<ClinicalValidation[]>([
+  const [clinicalValidations, setClinicalValidations] = useState<ClinicalValidationType[]>([
     {
       algorithmId: 'anomaly_detection_v2',
       validationType: 'fda_clearance',
@@ -519,6 +526,14 @@ function App() {
 
     return () => clearInterval(interval);
   }, [anomalyService, predictiveService, emergencyContacts, speak, nutritionData, environmentalData]);
+
+  // Store historical health data
+  useEffect(() => {
+    setHistoricalHealthData(prev => {
+      const newData = [...prev, healthData];
+      return newData.slice(-90); // Keep last 90 days
+    });
+  }, [healthData]);
 
   const handleSendMessage = async (content: string) => {
     // Update AI personality
@@ -975,6 +990,7 @@ function App() {
   };
 
   return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950">
     <ErrorBoundary>
       <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950">
         {/* Background Pattern */}
@@ -983,6 +999,7 @@ function App() {
         <div className="relative z-10 container mx-auto px-4 py-6">
           {/* Header */}
           <header className="text-center mb-8">
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="flex items-center justify-center space-x-4 mb-6">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl shadow-2xl shadow-cyan-500/25">
                 <Bot size={32} className="text-white" />
@@ -996,6 +1013,7 @@ function App() {
                 onClearAll={handleClearAllNotifications}
               />
             </div>
+            </motion.div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-4">
               RoboK9 Control Center
             </h1>
@@ -1004,6 +1022,36 @@ function App() {
             </p>
           </header>
 
+          {/* Main Navigation Tabs */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex justify-center mb-8"
+          >
+            <div className="flex space-x-1 bg-slate-900/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-1">
+              {[
+                { id: 'dashboard', label: 'Dashboard', icon: Bot },
+                { id: 'robot', label: '3D Robot', icon: Zap },
+                { id: 'health', label: 'Health AI', icon: Heart },
+                { id: 'ai', label: 'AI Vision', icon: Camera }
+              ].map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveMainTab(id as any)}
+                  className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+                    activeMainTab === id
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  }`}
+                >
+                  <Icon size={18} />
+                  <span className="font-medium">{label}</span>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Commands */}
             <div className="space-y-6">
@@ -1011,6 +1059,7 @@ function App() {
                 const IconComponent = categoryIcons[category as keyof typeof categoryIcons];
                 return (
                   <div key={category} className="bg-slate-900/30 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.1 * Object.keys(groupedCommands).indexOf(category) }}>
                     <div className="flex items-center mb-6">
                       <IconComponent className="mr-3 text-cyan-400" size={24} />
                       <h2 className="text-xl font-semibold text-white">
@@ -1028,6 +1077,7 @@ function App() {
                         />
                       ))}
                     </div>
+                    </motion.div>
                   </div>
                 );
               })}
@@ -1035,6 +1085,35 @@ function App() {
 
             {/* Middle Column - Camera Feed & Environment */}
             <div className="space-y-6">
+              <AnimatePresence mode="wait">
+                {activeMainTab === 'dashboard' && (
+                  <motion.div
+                    key="dashboard"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <RealSystemStatus />
+                  </motion.div>
+                )}
+                
+                {activeMainTab === 'robot' && (
+                  <motion.div
+                    key="robot"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Robot3DVisualization 
+                      dogStatus={dogStatus}
+                      onRobotClick={(part) => console.log('Robot part clicked:', part)}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <CameraFeed
                 isActive={dogStatus.cameraActive}
                 onToggle={handleCameraToggle}
@@ -1046,6 +1125,21 @@ function App() {
                   nightVisionMode: !prev.nightVisionMode 
                 }))}
               />
+              
+              {activeMainTab === 'ai' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <AIVisionSystem
+                    isActive={aiVisionActive}
+                    onToggle={() => setAiVisionActive(!aiVisionActive)}
+                  />
+                </motion.div>
+              )}
+              
+              {/* Weather Widget */}
               
               {/* Weather Widget */}
               <WeatherWidget onWeatherUpdate={handleWeatherUpdate} />
@@ -1063,6 +1157,21 @@ function App() {
 
             {/* Right Column - AI & Health */}
             <div className="space-y-6">
+              {activeMainTab === 'health' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <AdvancedHealthDashboard
+                    healthData={healthData}
+                    historicalData={historicalHealthData}
+                  />
+                </motion.div>
+              )}
+              
+              {/* Dog Status */}
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 }}>
               {/* Dog Status */}
               <DogStatus status={dogStatus} />
               
@@ -1071,6 +1180,7 @@ function App() {
                 personality={aiPersonality}
                 onPersonalityUpdate={(update) => setAiPersonality(prev => ({ ...prev, ...update }))}
               />
+              </motion.div>
               
               {/* Voice Command Trainer */}
               <VoiceCommandTrainer
@@ -1079,6 +1189,7 @@ function App() {
                 onDeleteCommand={handleDeleteVoiceCommand}
               />
               
+              {/* Predictive Insights */}
               {/* Predictive Insights */}
               <PredictiveInsights
                 insights={predictiveInsights}
@@ -1157,6 +1268,7 @@ function App() {
         </div>
       </div>
     </ErrorBoundary>
+    </div>
   );
 }
 
